@@ -1,0 +1,46 @@
+{
+  "name": "quote-bot",
+  "version": "1.0.0",
+  "description": "A discord bot for saving and displaying memorable quotes from you and your friends",
+  "main": "main.js",
+  "scripts": {
+    "test": "jasmine",
+    "test:db": "SET NODE_ENV=development && SET DATABASE_URL=<your-database-url> && SET ENCRYPTION_KEY=<your-test-key> && node ./spec/local-database-test.js",
+    "start": "NODE_ENV=production && node deploy-commands.js && node main.js",
+    "start:dev": "SET NODE_ENV=development && SET DATABASE_URL=<your-url-here> && SET TOKEN=<your-token-here> && SET CLIENT_ID=<your-client-id-here> && node deploy-commands.js && node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlecM33/quote-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlecM33/quote-bot/issues"
+  },
+  "homepage": "https://github.com/AlecM33/quote-bot#readme",
+  "dependencies": {
+    "@discordjs/builders": "^1.0.0",
+    "@discordjs/rest": "^1.0.0",
+    "canvas": "^2.11.0",
+    "d3": "^7.8.3",
+    "d3-cloud": "^1.2.5",
+    "discord-api-types": "^0.36.2",
+    "discord.js": "^13.14.0",
+    "jsdom": "^21.1.1",
+    "pg": "^8.5.1",
+    "randomcolor": "^0.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/eslint-parser": "^7.16.5",
+    "@babel/plugin-transform-object-assign": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.3",
+    "eslint": "^8.20.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "jasmine": "^4.2.1"
+  }
+}
