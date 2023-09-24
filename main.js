@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 }
 
 BOT.once('ready', () => {
-    BOT.user.setActivity('profound quotes', { type: 'LISTENING' });
+    BOT.user.setActivity('cursed quotes', { type: 'LISTENING' });
     console.log('Ready!');
 });
 
