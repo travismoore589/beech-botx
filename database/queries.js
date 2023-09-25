@@ -1,5 +1,4 @@
 const pool = require('./db');
-const encryptionKey = process.env.ENCRYPTION_KEY?.trim();
 
 module.exports = {
 
@@ -7,11 +6,10 @@ module.exports = {
         return query({
             text: `SELECT
                      id,
-                     PGP_SYM_DECRYPT(quotation::bytea, $1) as quotation,
                      author,
                      said_at
                    FROM quotes WHERE guild_id = $2;`,
-            values: [encryptionKey, guildId]
+            values: [guildId]
         });
     },
 
@@ -27,24 +25,21 @@ module.exports = {
         return query({
             text: `INSERT INTO quotes VALUES (
                 DEFAULT,
-                PGP_SYM_ENCRYPT($1, $2)::text,
+                $1,
+                $2,
                 $3,
-                $4,
-                $5,
-                digest($6, 'sha256')
+                $4
             ) RETURNING
                 id,
-                PGP_SYM_DECRYPT(quotation::bytea, $7) as quotation,
+                quotation,
                 author,
                 said_at;`,
             values: [
                 quote,
-                encryptionKey,
                 author,
                 saidAt,
                 guildId,
-                guildId.toLowerCase() + quote.toLowerCase() + author.toLowerCase(),
-                encryptionKey
+                guildId.toLowerCase() + quote.toLowerCase() + author.toLowerCase()
             ]
         });
     },
@@ -62,12 +57,11 @@ module.exports = {
         return query({
             text: `SELECT
                      id,
-                     PGP_SYM_DECRYPT(quotation::bytea, $1) as quotation,
+                     quotation,
                      author,
                      said_at
                    FROM quotes WHERE author = $2 AND guild_id = $3;`,
             values: [
-                encryptionKey,
                 author,
                 guildId
             ]
@@ -92,13 +86,11 @@ module.exports = {
         return query({
             text: `SELECT
                       id,
-                      PGP_SYM_DECRYPT(quotation::bytea, $1) as quotation,
+                      quotation,
                       author,
                       said_at FROM quotes
-                   WHERE LOWER(PGP_SYM_DECRYPT(quotation::bytea, $2)) LIKE LOWER($3) AND guild_id = $4;`,
+                   WHERE LOWER($2) LIKE LOWER($3) AND guild_id = $4;`,
             values: [
-                encryptionKey,
-                encryptionKey,
                 '%' + searchString + '%',
                 guildId
             ]
@@ -109,10 +101,10 @@ module.exports = {
         return query({
             text: `DELETE FROM quotes WHERE id = $1 AND guild_id = $2 RETURNING
                      id,
-                     PGP_SYM_DECRYPT(quotation::bytea, $3) as quotation,
+                     quotation,
                      author,
                      said_at;`,
-            values: [id, guildId, encryptionKey]
+            values: [id, guildId]
         });
     }
 
